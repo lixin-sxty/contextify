@@ -1,6 +1,7 @@
 import json
 from deepdiff import DeepDiff
 
+
 def diff_context_files(old_file, new_file):
     with open(old_file, "r", encoding="utf-8") as f:
         old_ctx = json.load(f)
@@ -18,6 +19,7 @@ def diff_context_files(old_file, new_file):
 
     for change_type, changes in diff.items():
         print(f"@@ {change_type} @@")
-        for path, detail in (changes.items() if isinstance(changes, dict) else enumerate(changes)):
+        for path, detail in (changes.items() if isinstance(changes, dict) else
+                             enumerate(changes)):
             print(f"{change_type}: {path} -> {detail}")
         print()
