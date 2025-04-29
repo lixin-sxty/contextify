@@ -5,12 +5,25 @@ build-backend = "setuptools.build_meta"
 [project]
 name = "contextify"
 version = "0.1.0"
-description = "A project context snapshot and diff tool"
+description = "A tool that transforms your project into structured, LLM-readable context"
 authors = [{ name="xin.li", email="lixin_cvmv@163.com" }]
 dependencies = [
-    "deepdiff==5.8.0"
+    "deepdiff>=5.8.0"
 ]
 requires-python = ">=3.7"
 
 [project.scripts]
 contextify = "contextify.cli:main"
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["contextify*"]
+exclude = ["tests*", "assets*"]
+
+[project.optional-dependencies]
+dev = [
+    "yapf",
+    "pytest",
+    "mypy",
+    "tox"
+]
