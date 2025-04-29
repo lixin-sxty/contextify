@@ -6,7 +6,7 @@ import datetime
 
 
 def main():
-    parser = argparse.ArgumentParser(description="📦 项目上下文快照和差异工具 projctx")
+    parser = argparse.ArgumentParser(description="📦 项目上下文快照和差异工具 contextify")
     subparsers = parser.add_subparsers(dest="command")
 
     export_parser = subparsers.add_parser("export", help="导出项目上下文快照")

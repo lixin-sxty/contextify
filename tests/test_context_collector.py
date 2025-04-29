@@ -1,5 +1,5 @@
 import os
-from projctx.context_collector import collect_project_context
+from contextify.context_collector import collect_project_context
 
 
 def test_collect_context():

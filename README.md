@@ -1,7 +1,11 @@
-# projctx
+# contextify
 
 📦 项目上下文快照和差异工具。
 
+## 打包
+```bash
+python -m build --wheel
+```
 ## 安装
 
 ```bash
@@ -13,13 +17,13 @@ pip install -e .
 ### 导出项目上下文快照
 
 ```bash
-projctx export <项目目录> --output <输出文件名> --exclude-dirs "__pycache__" "venv.*"
+contextify export <项目目录> --output <输出文件名> --exclude-dirs "__pycache__" "venv.*"
 ```
 
 ### 对比两个快照差异
 
 ```bash
-projctx diff old.json new.json
+contextify diff old.json new.json
 ```
 
 ## 特性
