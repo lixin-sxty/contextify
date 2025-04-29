@@ -8,7 +8,7 @@ version = "0.1.0"
 description = "A project context snapshot and diff tool"
 authors = [{ name="Your Name", email="your@email.com" }]
 dependencies = [
-    "deepdiff>=6.0.0"
+    "deepdiff==5.8.0"
 ]
 requires-python = ">=3.7"
 
