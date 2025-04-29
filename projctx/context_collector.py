@@ -3,7 +3,7 @@ import json
 import datetime
 import re
 
-def collect_project_context(project_root, exts=None, exclude_dirs=None):
+def collect_project_context(project_root, exts=None, exclude_dirs=None, include_dirs=None):
     if exts is None:
         exts = (".py", ".md", ".yaml", ".yml", ".toml", ".cfg", ".json",
                 ".ini", ".txt", ".cpp", ".hpp", ".h", ".c", ".java", ".js",
@@ -15,6 +15,7 @@ def collect_project_context(project_root, exts=None, exclude_dirs=None):
     ]
 
     exclude_dirs = exclude_dirs or []
+    include_dirs = include_dirs or []
     all_exclude_dirs = default_exclude_dirs + exclude_dirs
 
     context = {
@@ -29,7 +30,12 @@ def collect_project_context(project_root, exts=None, exclude_dirs=None):
     errors = []
 
     for root, dirs, files in os.walk(project_root):
+        # 先正选 include_dirs（如果有）
+        if include_dirs:
+            dirs[:] = [d for d in dirs if any(re.fullmatch(p, d) for p in include_dirs)]
+        # 再排除 exclude_dirs
         dirs[:] = [d for d in dirs if not any(re.fullmatch(pattern, d) for pattern in all_exclude_dirs)]
+
         for file in files:
             if file.endswith(exts):
                 file_path = os.path.join(root, file)
@@ -44,7 +50,7 @@ def collect_project_context(project_root, exts=None, exclude_dirs=None):
                 except Exception as e:
                     errors.append(f"❌ {file_path}: {e}")
 
-    return context, errors, all_exclude_dirs
+    return context, errors, all_exclude_dirs, include_dirs
 
 def add_to_tree(tree, file_path):
     parts = file_path.split(os.sep)
@@ -60,3 +66,4 @@ def print_tree(tree, indent=0):
         else:
             print("  " * indent + f"📁 {key}/")
             print_tree(value, indent + 1)
+

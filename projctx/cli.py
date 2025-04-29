@@ -13,6 +13,7 @@ def main():
     export_parser.add_argument("--output", type=str, default=None, help="输出 JSON 文件名")
     export_parser.add_argument("--exts", nargs="+", default=None, help="要收集的文件扩展名")
     export_parser.add_argument("--exclude-dirs", nargs="+", default=None, help="排除目录正则")
+    export_parser.add_argument("--include-dirs", nargs="+", default=None, help="仅包含目录正则")
 
     diff_parser = subparsers.add_parser("diff", help="对比两个上下文快照")
     diff_parser.add_argument("old_file", type=str, help="旧版本 JSON 文件")
@@ -26,8 +27,8 @@ def main():
         output_file = args.output or f"{project_name}_{timestamp}.json"
         exts = tuple(args.exts) if args.exts else None
 
-        context, errors, exclude_dirs_used = collect_project_context(
-            args.project_dir, exts=exts, exclude_dirs=args.exclude_dirs)
+        context, errors, exclude_dirs_used, include_dirs_used = collect_project_context(
+            args.project_dir, exts=exts, exclude_dirs=args.exclude_dirs, include_dirs=args.include_dirs)
 
         with open(output_file, "w", encoding="utf-8") as f:
             json.dump(context, f, indent=2, ensure_ascii=False)
@@ -37,6 +38,11 @@ def main():
         print(f"\n📂 排除目录正则：")
         for pattern in exclude_dirs_used:
             print(f"  - {pattern}")
+
+        if include_dirs_used:
+            print(f"\n📂 仅包含目录正则：")
+            for pattern in include_dirs_used:
+                print(f"  - {pattern}")
 
         if errors:
             print("\n⚠️ 以下文件读取失败：")
@@ -51,3 +57,4 @@ def main():
 
     else:
         parser.print_help()
+
